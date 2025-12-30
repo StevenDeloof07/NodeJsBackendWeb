@@ -16,6 +16,17 @@ app.get('/users', (req, res) => {
     res.json(users);
 })
 
+app.get('/users/:id', async (req, res) => {
+    const selectUser = db.prepare('select * from users where id=? ');
+    const id = req.params.id
+    console.log(id)
+    const user = await selectUser.get(id);
+
+
+
+    res.json(user);
+})
+
 app.listen(8000, () => {
     console.log("API draait nu!");
 })

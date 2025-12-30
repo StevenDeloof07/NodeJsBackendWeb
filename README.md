@@ -8,7 +8,8 @@ This project consists of an API, which will be used to connect to a database. Fo
 
 #### index.js
 
-##### Add details link for user
+Add details link for user:
+
 https://gemini.google.com/share/0ec02fc75791
 
 #### Sqlite code (connection.js)
