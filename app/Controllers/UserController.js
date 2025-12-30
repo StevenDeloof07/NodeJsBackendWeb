@@ -29,20 +29,35 @@ userController.get_user = async (req, res) => {
     res.json(user);
 }
 
-userController.create_user = async (req,res) => {
+userController.create = async (req,res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.json({error: errors.array()})
+        return res.json({errors: errors.array()})
     }
 
     const {name, email, birthday, about_me} = req.body
 
     const db = createDatabase();
 
+    const mailCheck = db.prepare('select * from users where email=?')
+
+    const rows = mailCheck.get(email)
+
+    if (rows) {
+        return res.json({errors: "This mail is already in use"})
+    }
+
     const insertUser = db.prepare("insert into users(name, email, birthday, about_me) values (?, ?, ?, ?)")
 
     const response = await insertUser.run(name, email, birthday, about_me)
 
-    return res.json({response: response});
+    return res.json({succes: "mail succesfully added!"});
+}
+
+userController.delete = async (req, res) => {
+    const id = req.params.id
+
+    console.log(id);
+    return res.json({response: "This function doesn't work yet"})
 }
 export default userController

@@ -17,6 +17,7 @@ router.post('/users', [
     body("about_me").notEmpty().withMessage("geef een beschrijving mee")
     .isString().isLength({min: 1, max: 255})
     .withMessage('Geef een geldige beschrijving mee')
-], userController.create_user)
+], userController.create)
 
+router.delete("/users/:id", userController.delete)
 export default router;
