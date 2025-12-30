@@ -51,13 +51,25 @@ userController.create = async (req,res) => {
 
     const response = await insertUser.run(name, email, birthday, about_me)
 
-    return res.json({succes: "mail succesfully added!"});
+    return res.json({succes: "Account succesfully added!"});
 }
 
 userController.delete = async (req, res) => {
+    const db = createDatabase();
     const id = req.params.id
 
-    console.log(id);
-    return res.json({response: "This function doesn't work yet"})
+    const userCheck = db.prepare('select * from users where id=? ');
+    const rows = await userCheck.get(id);
+
+    console.log(rows)
+
+    if (!rows) {
+        return res.json({errors: "This user doesn't appear to exist"})
+    }
+
+    const deleteAction = db.prepare('delete from users where id=?');
+    deleteAction.run(id)
+    
+    return res.json({succes: "account succesfully deleted"})
 }
 export default userController
