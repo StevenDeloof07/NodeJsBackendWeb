@@ -1,0 +1,23 @@
+{
+  "name": "nodejsbackendweb",
+  "version": "1.0.0",
+  "description": "API written voor my 2nd year subject Backend Web",
+  "homepage": "https://github.com/StevenDeloof07/NodeJsBackendWeb#readme",
+  "bugs": {
+    "url": "https://github.com/StevenDeloof07/NodeJsBackendWeb/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StevenDeloof07/NodeJsBackendWeb.git"
+  },
+  "license": "ISC",
+  "author": "Steven Deloof",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
