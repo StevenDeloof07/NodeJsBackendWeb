@@ -7,17 +7,24 @@ import {body} from 'express-validator';
 const router = express.Router();
 
 router.get('/users', userController.get_all);
+
 router.get('/users/:id', userController.get_user)
 router.post('/users', [
     body("name").notEmpty().withMessage('Give a username'),
     body('email').notEmpty().withMessage("Give an email")
-    .isEmail().withMessage('email isn\'t a correct mail'),
+    .isEmail().withMessage('The email value isn\'t a correct mail'),
     body('birthday').notEmpty().withMessage('give a birthday')
-    .isDate().withMessage('The birthday field must be a date'),
+    .isDate().withMessage('The birthday field isn\'t a date'),
     body("about_me").notEmpty().withMessage("give an about_me value")
     .isString().isLength({min: 1, max: 255})
     .withMessage('Give an about_me that\s shorter than 255 characters')
 ], userController.create)
 
+router.patch('/users/:id', [
+    body('email').optional().isEmail().withMessage('The email value isn\'t a correct mail'),
+    body('birthday').optional().isDate().withMessage('The birthday field isn\'t a date'),
+    body('about_me').optional().isString().isLength({min: 1, max: 255})
+    .withMessage('Give an about_me that\s shorter than 255 characters')
+],userController.change);
 router.delete("/users/:id", userController.delete)
 export default router;

@@ -26,3 +26,6 @@ https://betterstack.com/community/guides/scaling-nodejs/express-validator-nodejs
 https://www.geeksforgeeks.org/web-tech/controllers-in-expressjs/
 
 
+#### UserController
+
+https://www.freecodecamp.org/news/check-if-an-object-is-empty-in-javascript/

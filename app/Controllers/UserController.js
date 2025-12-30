@@ -54,6 +54,71 @@ userController.create = async (req,res) => {
     return res.json({succes: "Account succesfully added!"});
 }
 
+userController.change = async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.json({errors: errors.array()})
+    }  
+
+    const body = req.body
+    //Used to check if the object is empty or not
+    //https://www.freecodecamp.org/news/check-if-an-object-is-empty-in-javascript/
+    if (Object.keys(body).length == 0) {
+        return res.json({errors: "Please give some values to update"})
+    }
+    const id = req.params.id;
+
+    const {name, email, birthday, about_me} = body;
+
+    let changes = ""
+
+    const changedValues = []
+
+    if (name) {
+        changes += " name=?,"
+        changedValues.push(name)
+    }
+    if (email) {
+        changes += " email=?,"
+        changedValues.push(email)
+    }
+    if (birthday) {
+        changes += " birthday=?,"
+        changedValues.push(birthday)
+    }
+    if (about_me) {
+        changes += " about_me=?,"
+        changedValues.push(about_me)
+    }
+
+
+    changes = changes.substring(0, changes.length - 1)
+
+    const db = createDatabase();
+
+    const userCheck = db.prepare('select * from users where id=? ');
+    const rows = await userCheck.get(id);
+
+
+    if (!rows) {
+        return res.json({errors: "This user doesn't appear to exist"})
+    }
+
+    const userChange = db.prepare(`Update users set ${changes} where id=?`)
+
+    changedValues.push(id);
+
+    userChange.run(...changedValues)
+
+    db.close();
+
+    return res.json({
+        succes: "User succesfully changed!",
+        changed_user: generateUrl(req, "users", id)
+    })
+}
+
 userController.delete = async (req, res) => {
     const db = createDatabase();
     const id = req.params.id
@@ -61,7 +126,6 @@ userController.delete = async (req, res) => {
     const userCheck = db.prepare('select * from users where id=? ');
     const rows = await userCheck.get(id);
 
-    console.log(rows)
 
     if (!rows) {
         return res.json({errors: "This user doesn't appear to exist"})
@@ -69,6 +133,8 @@ userController.delete = async (req, res) => {
 
     const deleteAction = db.prepare('delete from users where id=?');
     deleteAction.run(id)
+
+    db.close()
     
     return res.json({succes: "account succesfully deleted"})
 }
