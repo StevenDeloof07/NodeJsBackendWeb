@@ -1,5 +1,5 @@
 import sqlite from "node:sqlite";
 
-const db = new sqlite.DatabaseSync('./database/database.sqlite')
+const createDB = () => {return new sqlite.DatabaseSync('./database/database.sqlite')}
 
-export default db;
+export default createDB;

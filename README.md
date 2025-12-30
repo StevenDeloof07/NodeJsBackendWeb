@@ -15,3 +15,6 @@ https://gemini.google.com/share/0ec02fc75791
 #### Sqlite code (connection.js)
 https://betterstack.com/community/guides/scaling-nodejs/nodejs-sqlite/
 
+#### Routes
+https://www.geeksforgeeks.org/web-tech/controllers-in-expressjs/
+
