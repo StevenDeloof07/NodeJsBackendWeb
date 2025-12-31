@@ -66,14 +66,13 @@ userController.change = async (req, res) => {
     }  
 
     const body = req.body
-    //Used to check if the object is empty or not
+    //This means that only the ID would have been sendt
     //https://www.freecodecamp.org/news/check-if-an-object-is-empty-in-javascript/
-    if (Object.keys(body).length == 0) {
+    if (Object.keys(body).length == 1) {
         return res.json({errors: "Please give some values to update"})
     }
-    const id = req.params.id;
 
-    const {name, email, birthday, about_me} = body;
+    const {id, name, email, birthday, about_me} = body;
 
     let changes = ""
 
@@ -142,4 +141,5 @@ userController.delete = async (req, res) => {
     
     return res.json({succes: "account succesfully deleted"})
 }
+
 export default userController

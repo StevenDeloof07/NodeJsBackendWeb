@@ -20,7 +20,9 @@ router.post('/', [
     .withMessage('Give an about_me that\s shorter than 255 characters')
 ], userController.create)
 
-router.patch('/:id', [
+router.patch('/', [
+    body('id').exists().withMessage("Send an id with this request").
+    isNumeric().withMessage("The id must be a number"),
     body('email').optional().isEmail().withMessage('The email value isn\'t a correct mail'),
     body('birthday').optional().isDate().withMessage('The birthday field isn\'t a date'),
     body('about_me').optional().isString().isLength({min: 1, max: 255})

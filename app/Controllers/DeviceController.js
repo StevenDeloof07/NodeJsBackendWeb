@@ -27,7 +27,7 @@ deviceController.get_device = async (req, res) => {
     db.close();
 
     if (!device) {
-        return res.json({errors: "This device doesn't appear to exist"})
+        return res.json({succes: "This device doesn't appear to exist"})
     }
 
     res.json(device);
@@ -54,7 +54,76 @@ deviceController.create = async (req, res) => {
     const insertDevice = db.prepare("insert into devices(name, release_date, description) values(?, ?, ?)")
     insertDevice.run(name, release_date, description)
 
-    return res.json({message: "Device succesfully added"})
+    return res.json({succes: "Device succesfully added"})
+}
+
+deviceController.update = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.json({errors: errors.array()})
+    }
+
+    const body = req.body
+
+    //This means that only the ID would have been sendt
+    if (Object.keys(body).length == 1) {
+        return res.json({errors: "Please give some values to update"})
+    }
+
+    const {id, name, release_date, description} = body
+
+    const db = createDatabase();
+    const selectDevice = db.prepare('select * from devices where id=? ');
+    const device = await selectDevice.get(id);
+
+    if (!device) {
+        return res.json({errors: "This device doesn't appear to exist"})
+    }
+
+    let changes = ""
+
+    const changedValues = []
+
+    if (name) {
+        changes += " name=?,"
+        changedValues.push(name)
+    }
+    if (release_date) {
+        changes += " release_date=?,"
+        changedValues.push(release_date)
+    }
+    if (description) {
+        changes += " description=?,"
+        changedValues.push(description)
+    }
+
+    changes = changes.substring(0, changes.length - 1)
+
+    const changeDevice = db.prepare(`update devices set ${changes} where id=?`)
+    changedValues.push(id)
+    changeDevice.run(...changedValues)
+
+    return res.json({succes: "Device succesfully changed"})
+}
+
+deviceController.delete = async (req, res) => {
+    const db = createDatabase();
+    const id = req.params.id
+
+    const checkDevice = db.prepare('select * from devices where id=? ');
+    const rows = await checkDevice.get(id);
+
+
+    if (!rows) {
+        return res.json({errors: "This device doesn't appear to exist"})
+    }
+
+    const deleteAction = db.prepare('delete from devices where id=?');
+    deleteAction.run(id)
+
+    db.close()
+    
+    return res.json({succes: "device succesfully deleted"})
 }
 
 export default deviceController
