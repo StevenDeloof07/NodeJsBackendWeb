@@ -39,7 +39,7 @@ deviceController.create = async (req, res) => {
         return res.json({errors: errors.array()})
     }
 
-    return res.json({message, "This function isn't ready yet"})
+    return res.json({message: "This function isn't ready yet"})
 }
 
 export default deviceController
