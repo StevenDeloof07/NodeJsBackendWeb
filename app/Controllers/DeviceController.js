@@ -39,7 +39,22 @@ deviceController.create = async (req, res) => {
         return res.json({errors: errors.array()})
     }
 
-    return res.json({message: "This function isn't ready yet"})
+    const {name, release_date, description} = req.body
+
+    const db = createDatabase();
+
+    const nameCheck = db.prepare('select * from devices where name=?')
+
+    const rows = nameCheck.get(name)
+
+    if (rows) {
+        return res.json({errors: "This device's name is already in use"})
+    }
+
+    const insertDevice = db.prepare("insert into devices(name, release_date, description) values(?, ?, ?)")
+    insertDevice.run(name, release_date, description)
+
+    return res.json({message: "Device succesfully added"})
 }
 
 export default deviceController
