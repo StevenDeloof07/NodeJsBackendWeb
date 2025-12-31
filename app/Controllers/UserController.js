@@ -24,8 +24,12 @@ userController.get_user = async (req, res) => {
     const selectUser = db.prepare('select * from users where id=? ');
     const id = req.params.id
     const user = await selectUser.get(id);
-
     db.close();
+
+    if (!user) {
+        return res.json({errors: "This user doesn't appear to exist"})
+    }
+
     res.json(user);
 }
 

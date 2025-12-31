@@ -1,12 +1,11 @@
 import express from "express";
-import bodyParser from "body-parser";
-import router from './app/routes.js'
+import userRouter from './app/Routes/userRoutes.js'
 
 const app = express();
 
 app.use(express.json())
 
-app.use('/', router)
+app.use('/users', userRouter)
 
 app.listen(8000, () => {
     console.log("API draait nu!");
