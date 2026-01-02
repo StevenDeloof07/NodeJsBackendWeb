@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Root</title>
+</head>
+<body>
+    <header>
+        <h1>REST API: users and devices</h1>
+        <div>
+            Welcome to the root of my API. Here I will write a short text explaining how to correctly make use of the API
+        </div>
+    </header>
+
+    <main>
+        <p>
+            This API is short and sweet, storing 2 entities: users and devices. Both of these can be created, updated and deleted
+        </p>
+
+        <h2>Users</h2>
+        <h4>properties</h4>
+        <ul>
+            <li>
+                id
+                <ul>
+                    <li>description: the ID of the user, used for linking to a specific user in requests</li>
+                    <li>type: number</li>
+                </ul>
+            </li>
+            <li>
+                first_name
+                <ul>
+                    <li>description: the first name of the user.</li>
+                    <li>type: string</li>
+                    <li>note: When all users are asked, will be combined with the regular name</li>
+                </ul>
+            </li>
+            <li>
+                name
+                <ul>
+                    <li>description: the last name of the user</li>
+                    <li>type: number</li>
+                </ul>
+            </li>
+            <li>
+                email
+                <ul>
+                    <li>description: the users email. This must always be saved in form of an email</li>
+                    <li>type: email string</li>
+                </ul>
+            </li>
+            <li>
+                about_me
+                <ul>
+                    <li>description: a short description of the user.</li>
+                    <li>type: string</li>
+                </ul>
+            </li>
+            <li>
+                birthday
+                <ul>
+                    <li>description: The date the user was born. Formatted in yyyy:mm:dd</li>
+                    <li>type: date</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h4>Fetch all users</h4>
+        <ul>
+            <li>GET path: http://localhost:8000/users/</li>
+            <li>Parameteres: none</li>
+            <li>Returns: a list of the first 5 users, and a link to the next 5.</li>
+        </ul>
+
+
+        <h4>Fetch a user</h4>
+        <ul>
+            <li>GET path: http://localhost:8000/users/{id}</li>
+            <li>Parameters: user id of the user in the url</li>
+            <li>Returns: All the associated user data, or an error if the user doesn't exists</li>
+            <li>Example:
+                <ul>
+                    <li>URL: http://localhost:8000/users/42</li>
+                    <li>
+                        Response:
+                        <p>
+                            {<br>
+                                "id":42,<br>
+                                "first_name":"Big Boss",<br>
+                                "name":"Robin",<br>
+                                "email":"admin@ehb.be",<br>
+                                "about_me":"I'm the big boss admin! My name is Steven Bertsonn",<br>
+                                "birthday":"2004-04-06"<br>
+                            }
+                        </p>
+                    </li>
+                    <li>
+                        Error:
+                        <p>
+                            {<br>
+	                            "errors": "This user doesn't appear to exist"<br>
+                            }   
+                        </p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <h4>Create a user</h4>
+        <ul>
+            <li>POST path: http://localhost:8000/users</li>
+            <li>
+            Request body: 
+            <ul>
+                <li>encoding type: JSON</li>
+                <li>
+                    first_name: 
+                    <ul>
+                        <li>Type: Required string</li>
+                        <li>Note: Numbers are not allowed inside this field</li>
+                    </ul>
+                </li>
+                <li>
+                    name: 
+                    <ul>
+                        <li>Type: Required string</li>
+                    </ul>
+                </li>
+                <li>
+                    email: 
+                    <ul>
+                        <li>Type: Required string</li>
+                        <li>Note: string must be in email format, and the email must be unique</li>
+                    </ul>
+                </li>
+                <li>
+                    about_me: 
+                    <ul>
+                        <li>Type: Required string</li>
+                    </ul>
+                </li>
+                <li>
+                    birthday: 
+                    <ul>
+                        <li>Type: Required date</li>
+                    </ul>
+                </li>
+
+            </ul>
+
+            <li>Returns: a succes or error message</li>
+
+            <li>
+                    Example: <br>
+                    <ul>
+                        <li>
+                            Request:
+                            <p>
+                                {<br>
+                                    "first_name" : "Jean-pièrre",<br>
+                                    "name": "philippe",<br>
+                                    "email": "Jean@example.com",<br>
+                                    "birthday": "1990-01-01",<br>
+                                    "about_me": "I am Jean!"<br>
+                                }
+                            </p>
+                        </li>
+                        <li>
+                            Succes message: <br>
+                            <p>
+                                {<br>
+                                    "succes": "Account succesfully added!"<br>
+                                }
+                            </p>
+                        </li>
+                        <li>
+                            Error message: <br>
+                            <p>
+                                {
+                                    "errors": [
+                                        {
+                                            "type": "field",
+                                            "msg": "Give the user a first_name",
+                                            "path": "first_name",
+                                            "location": "body"
+                                        }
+                                    ]
+                                }
+                            </p>
+                        </li>
+                        <li>
+                            Error message (wrong parameter)
+                            <p>
+                                {
+                                    "errors": [
+                                        {
+                                            "type": "field",
+                                            "value": "fre345",
+                                            "msg": "Give a first_name without numbers",
+                                            "path": "first_name",
+                                            "location": "body"
+                                        }
+                                    ]
+                                }
+                            </p>
+                        </li>
+                    </ul>
+                </li>
+            </li>
+        </ul>
+
+        <h4>Delete a user</h4>
+        <ul>
+            <li>DELETE path: http://localhost:8000/users/{id}</li>
+            <li>Parameteres: user id in url</li>
+            <li>Returns: a succes message if the user was deleted, or an error message if the user wasn't found</li>
+            <li>
+                Example: 
+                <ul>
+                    <li>URL: http://localhost:8000/users/420</li>
+                    <li>
+                        Response:<br>
+                        {<br>
+	                        "succes": "account succesfully deleted"<br>
+                        }
+                    </li>
+                    <li>
+                        Error:
+                        <p>{<br>
+                            "errors": "This user doesn't appear to exist"<br>
+                        }</p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <h4>Update a user</h4>
+        <ul>
+            <li>PATCH path: http://localhost:8000/users/</li>
+            <li>URL parameters: none</li>
+            <li>
+                        Request body: 
+                        <ul>
+                            <li>encoding type: JSON</li>
+                            <li>
+                                ID:
+                                <ul>
+                                    <li>Type: required integer</li>
+                                    <li>Note: Must be the id of an existing user</li>
+                                </ul>
+                            </li>
+                            <li>
+                                email: 
+                                <ul>
+                                    <li>Type: optional string</li>
+                                    <li>Note: string must be in email format, and the email must be unique</li>
+                                </ul>
+                            </li>
+                            <li>
+                                about_me: 
+                                <ul>
+                                    <li>Type: optional string</li>
+                                </ul>
+                            </li>
+                            <li>
+                                birthday: 
+                                <ul>
+                                    <li>Type: optional date</li>
+                                </ul>
+                            </li>
+
+                        </ul>
+            </li>
+            <li>Returns: a succes message and the user link if the user was updated, or an error message</li>
+            <li>
+                Notes:
+                <ul>
+                    <li>all parameters bedsides id are optional, but if they are given with the request, they can't be empty</li>
+                    <li>name and first_name can't be updated, and won't be accepted by the request</li>
+                </ul>
+            </li>
+            <li>
+                Example: 
+                <ul>
+                    <li>URL: http://localhost:8000/users/</li>
+                    <li>
+                        Request: 
+                        <p>
+                            {
+                                "id": 4,
+                                "email":"Thomas.Wyseur@example.com",
+                                "about_me": "Ik ben de docent Network Essentials en Scaling Networks"
+                            }
+                        </p>
+                    </li>
+                    <li>
+                        Response:
+                        <p>
+                            {
+                                "succes": "User succesfully changed!",
+                                "changed_user": "http://localhost:8000/users/4"
+                            }
+                        </p>
+                    </li>
+                    <li>
+                        Error if user doesn't exist:
+                        <p>
+                            {
+                                "errors": "This user doesn't appear to exist"
+                            }
+                        </p>
+                    </li>
+                    <li>
+                        Error if a parameter was filled in wrong:
+                        <p>
+                            {
+                                "errors": [
+                                    {
+                                        "type": "field",
+                                        "value": "Thomas.Wyseur",
+                                        "msg": "The email value isn't a correct mail",
+                                        "path": "email",
+                                        "location": "body"
+                                    }
+                                ]
+                            }
+                        </p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </main>
+</body>
+</html>

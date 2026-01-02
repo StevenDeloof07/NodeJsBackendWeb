@@ -13,10 +13,9 @@ For connecting to database:
 https://nodejs.org/api/sqlite.html
 
 #### index.js
+Send html file via node.js
+https://stackoverflow.com/questions/20345936/nodejs-send-html-file-to-client
 
-Add details link for user:
-
-https://gemini.google.com/share/0ec02fc75791
 
 #### Sqlite code (connection.js)
 https://betterstack.com/community/guides/scaling-nodejs/nodejs-sqlite/
@@ -27,6 +26,10 @@ https://www.geeksforgeeks.org/web-tech/controllers-in-expressjs/
 
 https://gemini.google.com/share/f2bf73b00975
 https://express-validator.github.io/docs/api/validation-chain/
+
+Add details link for user:
+
+https://gemini.google.com/share/0ec02fc75791
 
 
 #### UserController
