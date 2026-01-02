@@ -92,13 +92,18 @@ userController.search_user = async (req, res) => {
 
     const db = createDatabase();
 
-    console.log(params)
 
     const selectUsers = db.prepare("select * from users where " + params);
 
     const users = await selectUsers.all(...search_values)
 
     db.close()
+
+    console.log(users)
+
+    if (users.length == 0) {
+        return res.json({notfound: "No users with those parameters were found"})
+    }
 
     return res.json({succes: users})
 }
