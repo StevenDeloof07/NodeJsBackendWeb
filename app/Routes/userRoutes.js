@@ -10,7 +10,15 @@ router.get('/', userController.get_all);
 
 router.get('/:id', userController.get_user)
 router.post('/', [
-    body("name").notEmpty().withMessage('Give a username'),
+    /*
+        isAlpha used for checking if the firstname is only letters
+        Sources:
+        https://gemini.google.com/share/f2bf73b00975
+        https://express-validator.github.io/docs/api/validation-chain/
+    */
+    body('first_name').notEmpty().withMessage("Give the user a first_name").
+    isAlpha('fr-FR', {ignore: [' ', '-']}).withMessage("Give a first_name without numbers"),
+    body("name").notEmpty().withMessage('Give the user a name'),
     body('email').notEmpty().withMessage("Give an email")
     .isEmail().withMessage('The email value isn\'t a correct mail'),
     body('birthday').notEmpty().withMessage('give a birthday')

@@ -6,7 +6,7 @@ const userController = {};
 
 userController.get_all = async (req, res) => {
     const db = createDatabase();
-    const select = db.prepare('SELECT id, name FROM users');
+    const select = db.prepare('SELECT id, concat(first_name, \' \', name) as name FROM users');
 
     let users =  await select.all()
     for (let user of users) {
@@ -39,7 +39,7 @@ userController.create = async (req,res) => {
         return res.json({errors: errors.array()})
     }
 
-    const {name, email, birthday, about_me} = req.body
+    const {first_name, name, email, birthday, about_me} = req.body
 
     const db = createDatabase();
 
@@ -51,9 +51,9 @@ userController.create = async (req,res) => {
         return res.json({errors: "This mail is already in use"})
     }
 
-    const insertUser = db.prepare("insert into users(name, email, birthday, about_me) values (?, ?, ?, ?)")
+    const insertUser = db.prepare("insert into users(first_name, name, email, birthday, about_me) values (?, ?, ?, ?, ?)")
 
-    const response = await insertUser.run(name, email, birthday, about_me)
+    const response = await insertUser.run(first_name, name, email, birthday, about_me)
 
     return res.json({succes: "Account succesfully added!"});
 }
