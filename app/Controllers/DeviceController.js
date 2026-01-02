@@ -27,7 +27,7 @@ deviceController.get_device = async (req, res) => {
     db.close();
 
     if (!device) {
-        return res.json({errors: "This device doesn't appear to exist"})
+        return res.json({notfound: "This device doesn't appear to exist"})
     }
 
     res.json(device);
@@ -77,7 +77,7 @@ deviceController.update = async (req, res) => {
     const device = await selectDevice.get(id);
 
     if (!device) {
-        return res.json({errors: "This device doesn't appear to exist"})
+        return res.json({notfound: "This device doesn't appear to exist"})
     }
 
     let changes = ""
@@ -117,7 +117,7 @@ deviceController.delete = async (req, res) => {
 
 
     if (!rows) {
-        return res.json({errors: "This device doesn't appear to exist"})
+        return res.json({notfound: "This device doesn't appear to exist"})
     }
 
     const deleteAction = db.prepare('delete from devices where id=?');

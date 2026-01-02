@@ -83,9 +83,38 @@
 
             <h4 id="user-tag-2">Fetch all users &#8615;</h4>
             <ul class="submenu" id="u2">
-                <li>GET path: <a href="http://localhost:8000/users/">http://localhost:8000/users/</a></li>
-                <li>Parameteres: none</li>
-                <li>Returns: a list of the first 5 users, and a link to the next 5.</li>
+                <li>
+                    <br>
+                    <ul>
+                        <li>GET path: <a href="http://localhost:8000/users/">http://localhost:8000/users/</a></li>
+                        <li>GET path for specific index: http://localhost:8000/users/page/{id}</li>
+                        <li>Note: the first path is a general call, but will always send the first page of users</li>
+                    </ul>
+                </li>
+                <li>Parameteres: id if we want a specific page of users</li>
+                <li>
+                    Returns: a list of the first 5 users, and a link to the next 5. This is to prevent too many users from being sendt at once
+                </li>
+                <li>
+                    Example:
+                    <ul>
+                        <li>URL: http://localhost:8000/users/page/2</li>
+                        <li>
+                            Response:<br>
+                            {<br>
+                                "users":<br>
+                                [<br>
+                                {"id":6,"name":"steven Coulomnier","details":"http://localhost:8000/users/6"},<br>
+                                {"id":7,"name":"David Felix","details":"http://localhost:8000/users/7"},<br>
+                                {"id":8,"name":"steven Weemaels","details":"http://localhost:8000/users/8"},<br>
+                                {"id":9,"name":"David Coulomnier","details":"http://localhost:8000/users/9"},<br>
+                                {"id":10,"name":"steven Weemaels","details":"http://localhost:8000/users/10"}<br>
+                                ],<br>
+                                "next_line":"http://localhost:8000/users/page/3",<br>
+                                "previous_line":"http://localhost:8000/users/page/1"}
+                        </li>
+                    </ul>
+                </li>
             </ul>
 
 
@@ -114,7 +143,7 @@
                             Error:
                             <p>
                                 {<br>
-                                    "errors": "This user doesn't appear to exist"<br>
+                                    "notfound": "This user doesn't appear to exist"<br>
                                 }   
                             </p>
                         </li>
@@ -322,7 +351,7 @@
                             Error if user doesn't exist:
                             <p>
                                 {
-                                    "errors": "This user doesn't appear to exist"
+                                    "notfound": "This user doesn't appear to exist"
                                 }
                             </p>
                         </li>
@@ -415,7 +444,7 @@
                                 Error:
                                 <p>
                                     {
-                                        "errors": "This device doesn't appear to exist"
+                                        "notfound": "This device doesn't appear to exist"
                                     } 
                                 </p>
                             </li>
@@ -518,7 +547,7 @@
                             <li>
                                 Error:
                                 <p>{<br>
-                                    "errors": "This user doesn't appear to exist"<br>
+                                    "notfound": "This device doesn't appear to exist"<br>
                                 }</p>
                             </li>
                         </ul>
@@ -596,7 +625,7 @@
                             Error if the device doesn't exist:
                             <p>
                                 {
-                                    "errors": "This device doesn't appear to exist"
+                                    "notfound": "This device doesn't appear to exist"
                                 }
                             </p>
                         </li>

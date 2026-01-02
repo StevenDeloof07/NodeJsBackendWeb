@@ -6,7 +6,8 @@ import {body} from 'express-validator';
 
 const router = express.Router();
 
-router.get('/', userController.get_all);
+router.get('', userController.get_all)
+router.get('/page/:id', userController.get_all);
 
 router.get('/:id', userController.get_user)
 router.post('/', [
