@@ -22,8 +22,12 @@ npm install
 then, change directoy to the database directory, and run 
 
 ~~~
-cp database.example.sqlite
+cp database.example.sqlite database.sqlite
 ~~~
+
+Or on windows:
+~~~
+copy database.example.sqlite database.sqlite
 
 Finally, the API can be activated with 
 
