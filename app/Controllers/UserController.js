@@ -1,6 +1,7 @@
 import { validationResult } from 'express-validator';
 import createDatabase from '../../database/connection.js'
 import {generateUrl} from "../functions/url.js"
+import { create } from 'domain';
 
 const userController = {};
 
@@ -51,6 +52,55 @@ userController.get_user = async (req, res) => {
     }
 
     res.json(user);
+}
+
+userController.search_user = async (req, res) => {
+
+    const {first_name, name, email, birthday, about_me} = req.body
+
+    let params = []
+
+    const search_values = []
+
+    /*
+        Used gemini for checking the variables
+        https://gemini.google.com/share/bc30d58699b2 
+    */
+
+    if (name) {
+        params.push("name LIKE '%' || ? || '%'")
+        search_values.push(name)
+    }
+    if (email) {
+        params.push("email LIKE '%' || ? || '%'")
+        search_values.push(email)
+    }
+    if (birthday) {
+        params.push("birthday LIKE '%' || ? || '%'")
+        search_values.push(birthday)
+    }
+    if (about_me) {
+        params.push("about_me LIKE '%' || ? || '%'")
+        search_values.push(about_me)
+    }
+
+    if (search_values.length == 0) {
+        return userController.get_all(req, res)
+    }
+
+    params = params.join(' AND ')
+
+    const db = createDatabase();
+
+    console.log(params)
+
+    const selectUsers = db.prepare("select * from users where " + params);
+
+    const users = await selectUsers.all(...search_values)
+
+    db.close()
+
+    return res.json({succes: users})
 }
 
 userController.create = async (req,res) => {

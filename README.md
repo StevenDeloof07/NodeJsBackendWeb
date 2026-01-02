@@ -28,6 +28,7 @@ cp database.example.sqlite database.sqlite
 Or on windows:
 ~~~
 copy database.example.sqlite database.sqlite
+~~~
 
 Finally, the API can be activated with 
 
@@ -66,3 +67,4 @@ https://gemini.google.com/share/0ec02fc75791
 #### UserController
 
 https://www.freecodecamp.org/news/check-if-an-object-is-empty-in-javascript/
+https://gemini.google.com/share/bc30d58699b2 

@@ -9,7 +9,10 @@ const router = express.Router();
 router.get('', userController.get_all)
 router.get('/page/:id', userController.get_all);
 
+router.get('/search', userController.search_user)
+
 router.get('/:id', userController.get_user)
+
 router.post('/', [
     /*
         isAlpha used for checking if the firstname is only letters
