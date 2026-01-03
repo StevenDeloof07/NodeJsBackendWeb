@@ -56,6 +56,9 @@ userController.get_user = async (req, res) => {
 
 userController.search_user = async (req, res) => {
 
+
+    if (req.body == undefined) return res.json({errors: "Give parameters to search a guser"})
+
     const {first_name, name, email, birthday, about_me} = req.body
 
     let params = []
@@ -66,6 +69,11 @@ userController.search_user = async (req, res) => {
         Used gemini for checking the variables
         https://gemini.google.com/share/bc30d58699b2 
     */
+
+    if (first_name) {
+        params.push("first_name LIKE '%' || ? || '%'")
+        search_values.push(first_name)
+    }
 
     if (name) {
         params.push("name LIKE '%' || ? || '%'")
@@ -85,7 +93,7 @@ userController.search_user = async (req, res) => {
     }
 
     if (search_values.length == 0) {
-        return userController.get_all(req, res)
+        return res.redirect(generateUrl(req, "users"))
     }
 
     params = params.join(' AND ')

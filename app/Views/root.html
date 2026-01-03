@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        h4 {
-            width:10%;
-        }
         h4 :hover {
             cursor: pointer;
         }
@@ -94,6 +91,7 @@
                 <li>Parameteres: id if we want a specific page of users</li>
                 <li>
                     Returns: a list of the first 5 users, and a link to the next 5. This is to prevent too many users from being sendt at once
+                    Errors: If somehow a route is entered where no users can be aquired, a notfount message will be returned
                 </li>
                 <li>
                     Example:
@@ -112,6 +110,10 @@
                                 ],<br>
                                 "next_line":"http://localhost:8000/users/page/3",<br>
                                 "previous_line":"http://localhost:8000/users/page/1"}
+                        </li>
+                        <li>
+                            Error:<br>
+                            {"notfound":"No users were found on this page"}
                         </li>
                     </ul>
                 </li>
@@ -145,6 +147,139 @@
                                 {<br>
                                     "notfound": "This user doesn't appear to exist"<br>
                                 }   
+                            </p>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h4 id="user-tag-7">Search a specific user &#8615;</h4>
+            <ul class="submenu" id="u7">
+                <li>POST path: http://localhost:8000/users/search</li>
+                <li>
+                Request body: 
+                <ul>
+                    <li>encoding type: JSON</li>
+                    <li>
+                        first_name: 
+                        <ul>
+                            <li>Type: Optional string</li>
+                            <li>Note: Numbers are not allowed inside this field</li>
+                        </ul>
+                    </li>
+                    <li>
+                        name: 
+                        <ul>
+                            <li>Type: Optional string</li>
+                        </ul>
+                    </li>
+                    <li>
+                        email: 
+                        <ul>
+                            <li>Type: Optional string</li>
+                        </ul>
+                    </li>
+                    <li>
+                        about_me: 
+                        <ul>
+                            <li>Type: Optional string</li>
+                        </ul>
+                    </li>
+                    <li>
+                        birthday: 
+                        <ul>
+                            <li>Type: Optional date</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Notes:
+                        <ul>
+                            <li>
+                                Not all parameters must be filled in, but at least one must be given with the request.<br>
+                                If no parameters were given, a regular get_all response will be sendt
+                                If no request body is sendt, an error message will be sendt
+                            </li>
+                            <li>
+                                Text parameters will be checked via occurence. <br>
+                                If given a name with "eve" value, it would return users with eve in their name (for example steve)
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <li>Returns: All the users that match the parameters</li>
+                <li>
+                    Example:<br>
+                    <ul>
+                        <li>
+                            Request:
+                            <p>
+                                {<br>
+                                    "first_name": "steven",<br>
+                                    "last_name": "Wee"<br>
+                                }
+                            </p>
+                        </li>
+                        <li>
+                            Response:<br>
+                            <p>
+                                {<br>
+                                    "succes": [<br>
+                                        {
+                                            "id": 2,
+                                            "first_name": "steven",
+                                            "name": "Weemaels",
+                                            "email": "myundt@example.net",<br>
+                                            "about_me": "Suscipit non doloribus et odit aut. Eos deleniti nesciunt nihil dicta. Nisi culpa voluptatem aut qui esse aut.",
+                                            "birthday": "2005-04-07"
+                                        },<br>
+                                        {
+                                            "id": 4,
+                                            "first_name": "steven",
+                                            "name": "Weemaels",
+                                            "email": "rhea20@example.org",<br>
+                                            "about_me": "In laboriosam minima et sit quisquam quaerat. Temporibus quis beatae aut ipsa sed.",
+                                            "birthday": "2009-01-10"
+                                        },<br>
+                                        {
+                                            "id": 6,
+                                            "first_name": "steven",
+                                            "name": "Coulomnier",
+                                            "email": "mason.bradtke@example.com",<br>
+                                            "about_me": "Nulla amet consequatur sint et iste. Aliquid distinctio labore saepe. Non placeat quisquam delectus sed vel.",
+                                            "birthday": "1999-09-02"
+                                        },<br>
+                                        {
+                                            "id": 8,
+                                            "first_name": "steven",
+                                            "name": "Weemaels",
+                                            "email": "nico.hilpert@example.net",<br>
+                                            "about_me": "Et voluptatem non optio iste ut at. Voluptatem ut facilis consectetur praesentium. Quisquam et nihil debitis aspernatur.",
+                                            "birthday": "2025-07-08"
+                                        },<br>
+                                        {
+                                            "id": 10,
+                                            "first_name": "steven",
+                                            "name": "Weemaels",
+                                            "email": "wilma.schuster@example.net",<br>
+                                            "about_me": "Facilis perspiciatis consequatur in assumenda. Hic cumque molestias sint. Et deserunt dicta animi dolorum voluptas.",
+                                            "birthday": "1974-11-09"
+                                        }<br>
+                                    ]
+                                }
+                            </p>
+                        </li>
+                        <li>
+                            If no users with those parameters were found:
+                            <p>
+                                {
+                                    "notfound": "No users with those parameters were found"
+                                }
+                            </p>
+                        </li>
+                        <li>
+                            Error with empty body:
+                            <p>
+                                {"errors":"Give parameters to search a guser"}
                             </p>
                         </li>
                     </ul>
@@ -272,7 +407,7 @@
                         <li>
                             Error:
                             <p>{<br>
-                                "errors": "This user doesn't appear to exist"<br>
+                                "notfound": "This user doesn't appear to exist"<br>
                             }</p>
                         </li>
                     </ul>
