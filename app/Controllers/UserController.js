@@ -155,12 +155,16 @@ userController.change = async (req, res) => {
         return res.json({errors: "Please give some values to update"})
     }
 
-    const {id, name, email, birthday, about_me} = body;
+    const {id, first_name, name, email, birthday, about_me} = body;
 
     let changes = ""
 
     const changedValues = []
 
+    if (first_name) {
+        changes += " first_name=?,"
+        changedValues.push(first_name)
+    }
     if (name) {
         changes += " name=?,"
         changedValues.push(name)
